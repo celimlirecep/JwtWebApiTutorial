@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace JwtWebApiTutorial.Controllers
 {
@@ -12,7 +13,8 @@ namespace JwtWebApiTutorial.Controllers
         [HttpGet]
         public IActionResult Test1()
         {
-            return Ok();
+            var userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
+            return Ok(userName);
         }
     }
 }

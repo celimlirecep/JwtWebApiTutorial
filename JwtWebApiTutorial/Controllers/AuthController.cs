@@ -25,7 +25,7 @@ namespace JwtWebApiTutorial.Controllers
         private readonly IConfiguration configuration;
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserDto request)
+        public ActionResult<User> Register(UserDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.Username = request.Username;
@@ -34,7 +34,7 @@ namespace JwtWebApiTutorial.Controllers
             return Ok(user);
         }
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDto request)
+        public ActionResult<string> Login(UserDto request)
         {
             if (user.Username != request.Username)
             {
@@ -52,7 +52,7 @@ namespace JwtWebApiTutorial.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,user.Username)
+                new Claim("name",user.Username)
             };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
